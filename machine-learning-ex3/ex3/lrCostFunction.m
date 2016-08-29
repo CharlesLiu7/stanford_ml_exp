@@ -36,10 +36,12 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
+n = length(theta);
+J = sum(-log(sigmoid(X*theta)).*y-log(1-sigmoid(X*theta)).*(1-y))/m + ...
+    lambda*sum(theta(2:n).*theta(2:n))/2/m;
 
-
-
-
+temp = sigmoid(X*theta)-y;
+grad = (sum(repmat(temp,1,n).*X)/m)' + lambda*[0; theta(2:n)]/m;
 
 
 
