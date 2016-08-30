@@ -62,6 +62,15 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+second_layer = sigmoid([ones(m, 1), X]*Theta1');
+output_layer = sigmoid([ones(m, 1), second_layer]*Theta2');
+
+% http://stackoverflow.com/questions/8054258/matlab-octave-1-of-k-representation
+y_matrix = bsxfun(@eq, y, 1:10);
+theta1_s = Theta1(:,2:input_layer_size+1);
+theta2_s = Theta2(:,2:hidden_layer_size+1);
+J = sum(sum( (-y_matrix).*log(output_layer) - (1 - y_matrix).*log(1 - output_layer)))/m + ...
+    lambda*(sum(sum(theta1_s.*theta1_s)) + sum(sum(theta2_s.*theta2_s)) )/2/m;
 
 
 
