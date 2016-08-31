@@ -62,27 +62,23 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
-second_layer = sigmoid([ones(m, 1), X]*Theta1');
-output_layer = sigmoid([ones(m, 1), second_layer]*Theta2');
+second_layer = sigmoid([ones(m, 1), X]*Theta1'); % 5000*25
+output_layer = sigmoid([ones(m, 1), second_layer]*Theta2'); % 5000*10
 
 % http://stackoverflow.com/questions/8054258/matlab-octave-1-of-k-representation
-y_matrix = bsxfun(@eq, y, 1:10);
-theta1_s = Theta1(:,2:input_layer_size+1);
-theta2_s = Theta2(:,2:hidden_layer_size+1);
+y_matrix = bsxfun(@eq, y, 1:num_labels);
+theta1_s = Theta1(:,2:input_layer_size + 1);
+theta2_s = Theta2(:,2:hidden_layer_size + 1);
 J = sum(sum( (-y_matrix).*log(output_layer) - (1 - y_matrix).*log(1 - output_layer)))/m + ...
     lambda*(sum(sum(theta1_s.*theta1_s)) + sum(sum(theta2_s.*theta2_s)) )/2/m;
 
+delta_3 = output_layer - y_matrix; % 5000*10
+delta_2 = delta_3 * Theta2 .* sigmoidGradient([ones(m, 1), [ones(m, 1), X]*Theta1']); % 5000*26 note: <z> is not <a>
 
-
-
-
-
-
-
-
-
-
-
+Theta2_grad = (delta_3' * [ones(m, 1), second_layer])/m + ...
+    lambda*[zeros(num_labels, 1), Theta2(:, 2:hidden_layer_size+1)]/m;
+Theta1_grad = (delta_2(:, 2:hidden_layer_size+1)' * [ones(m, 1), X])/m + ...
+    lambda*[zeros(hidden_layer_size, 1), Theta1(:, 2:input_layer_size+1)]/m;
 
 
 
