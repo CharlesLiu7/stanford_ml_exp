@@ -16,7 +16,7 @@ sim = 0;
 %
 %
 
-
+sim = exp(-(pdist([x1'; x2'], 'euclidean') ^ 2 / 2 / sigma ^ 2));
 
 
 

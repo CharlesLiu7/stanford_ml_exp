@@ -22,7 +22,21 @@ sigma = 0.3;
 %  Note: You can compute the prediction error using 
 %        mean(double(predictions ~= yval))
 %
-
+C_list = [0.01 0.03 0.1 0.3 1 3 10 30];
+sigma_list = [0.01 0.03 0.1 0.3 1 3 10 30];
+error_lable = 1.0; % max mean error is 1.0
+for i=1:length(C_list)
+    for j=1:length(sigma_list)
+        model= svmTrain(X, y, C_list(i), @(x1, x2) gaussianKernel(x1, x2, sigma_list(j)));
+        predictions = svmPredict(model, Xval);
+        error = mean((predictions ~= yval));
+        if error < error_lable
+            C = C_list(i);
+            sigma = sigma_list(j);
+            error_lable = error;
+        end
+    end
+end
 
 
 

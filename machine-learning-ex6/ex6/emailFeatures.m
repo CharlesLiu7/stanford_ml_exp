@@ -49,8 +49,9 @@ x = zeros(n, 1);
 %
 
 
-
-
+x = sum(bsxfun(@eq, word_indices(:), 1:n));
+x = x>=1;
+x = x';
 
 
 
