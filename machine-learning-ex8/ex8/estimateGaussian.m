@@ -22,6 +22,10 @@ sigma2 = zeros(n, 1);
 %
 
 
+mu = mean(X)';
+sigma2 = var(X)*(m-1)/m;
+sigma2 = sigma2';
+
 
 
 
